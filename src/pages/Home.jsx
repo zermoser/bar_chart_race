@@ -5,7 +5,7 @@ import data from '../assets/db.json';
 const Test = () => {
   const [currentYear, setCurrentYear] = useState(1950);
   const [isRunning, setIsRunning] = useState(true);
-  const [speed, setSpeed] = useState(100);
+  const [speed, setSpeed] = useState(500);
   const [countryData, setCountryData] = useState([]);
 
   const filterDataByYear = (year) => {
@@ -13,8 +13,8 @@ const Test = () => {
       .filter(item => item.year === year.toString())
       .map((item,index) => ({
         id: index,
-        title: item.title,
-        value: parseInt(item.value),
+        title: item.country_name,
+        value: item.value,
         color: item.color,
       }))
       .sort((a, b) => b.value - a.value)
