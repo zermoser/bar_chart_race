@@ -48,9 +48,9 @@ const Test = () => {
   if (window.innerWidth >= 1280) {
     chartWidth = 800;
   } else if (window.innerWidth >= 960) {
-    chartWidth = 600;
+    chartWidth = 700;
   } else if (window.innerWidth >= 600) {
-    chartWidth = 480;
+    chartWidth = 540;
   } else {
     chartWidth = 280;
   }
