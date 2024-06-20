@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Redirect404 = () => {
+const RedirectHome = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate('/404');
+    navigate('/');
   }, [navigate]);
 
   return null;
 };
 
-export default Redirect404;
+export default RedirectHome;

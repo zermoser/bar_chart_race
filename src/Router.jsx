@@ -1,8 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
-import Chart2 from './pages/Chart2';
+import ChartAxios from './pages/ChartAxios';
+import ChartJson from './pages/ChartJson';
+import ChartMockup from './pages/ChartMockup';
 import PopulationChart from './pages/PopulationChart';
-import Redirect404 from './pages/Redirect404';
+import RedirectHome from './pages/RedirectHome';
 
 export const router = createBrowserRouter([
   {
@@ -10,8 +12,16 @@ export const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/2",
-    element: <Chart2 />,
+    path: "/json",
+    element: <ChartJson />,
+  },
+  {
+    path: "/axios",
+    element: <ChartAxios />,
+  },
+  {
+    path: "/mockup",
+    element: <ChartMockup />,
   },
   {
     path: "/populationChart",
@@ -19,10 +29,6 @@ export const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <Redirect404 />,
-  },
-  {
-    path: "404",
-    element: <div>Error Not Found</div>,
-  },
+    element: <RedirectHome />,
+  }
 ], { basename: "/bar_chart_race/" });
