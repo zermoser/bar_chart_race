@@ -4,7 +4,7 @@ import ChartAxios from './pages/ChartAxios';
 import ChartAxios2 from './pages/ChartAxios2';
 import ChartJson from './pages/ChartJson';
 import ChartMockup from './pages/ChartMockup';
-import PopulationChart from './pages/PopulationChart';
+import Home from './pages/Home';
 import RedirectHome from './pages/RedirectHome';
 
 export const router = createBrowserRouter([
@@ -29,8 +29,8 @@ export const router = createBrowserRouter([
     element: <ChartMockup />,
   },
   {
-    path: "/populationChart",
-    element: <PopulationChart />,
+    path: "/home",
+    element: <Home />,
   },
   {
     path: "*",

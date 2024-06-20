@@ -4,7 +4,7 @@ import * as am5xy from '@amcharts/amcharts5/xy';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import data from '../assets/db_filter.json';
 
-const PopulationChart = () => {
+const Home = () => {
   useEffect(() => {
     const root = am5.Root.new('chartdiv');
     root.numberFormatter.setAll({
@@ -222,4 +222,4 @@ const PopulationChart = () => {
   );
 };
 
-export default PopulationChart;
+export default Home;

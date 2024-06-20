@@ -1,9 +1,9 @@
-import PopulationChart from './pages/PopulationChart';
+import Home from './pages/Home';
 
 const App = () => {
   return (
     <div>
-      <PopulationChart />
+      <Home />
     </div>
   );
 }
