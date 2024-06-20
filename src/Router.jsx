@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
-import Home from './pages/Home';
-import Test from './pages/Test';
+import Chart2 from './pages/Chart2';
+import PopulationChart from './pages/PopulationChart';
 import Redirect404 from './pages/Redirect404';
 
 export const router = createBrowserRouter([
@@ -10,12 +10,12 @@ export const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/home",
-    element: <Home />,
+    path: "/2",
+    element: <Chart2 />,
   },
   {
-    path: "/test",
-    element: <Test />,
+    path: "/populationChart",
+    element: <PopulationChart />,
   },
   {
     path: "*",
