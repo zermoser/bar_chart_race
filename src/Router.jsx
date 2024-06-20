@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
 import ChartAxios from './pages/ChartAxios';
+import ChartAxios2 from './pages/ChartAxios2';
 import ChartJson from './pages/ChartJson';
 import ChartMockup from './pages/ChartMockup';
 import PopulationChart from './pages/PopulationChart';
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
   {
     path: "/axios",
     element: <ChartAxios />,
+  },
+  {
+    path: "/axios2",
+    element: <ChartAxios2 />,
   },
   {
     path: "/mockup",
