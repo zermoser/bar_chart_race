@@ -4,7 +4,7 @@ import * as am5xy from '@amcharts/amcharts5/xy';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import data from '../assets/db_filter.json';
 
-const SocialMediaChart = () => {
+const PopulationChart = () => {
   useEffect(() => {
     const root = am5.Root.new('chartdiv');
     root.numberFormatter.setAll({
@@ -104,19 +104,19 @@ const SocialMediaChart = () => {
       })
     );
 
-const transformData = (data) => {
-  const result = {};
-  data.forEach(item => {
-    if (!result[item.year]) {
-      result[item.year] = {};
-    }
-    result[item.year][item.country_name] = item.value;
-  });
-  
-  return result;
-};
+    const transformData = (data) => {
+      const result = {};
+      data.forEach(item => {
+        if (!result[item.year]) {
+          result[item.year] = {};
+        }
+        result[item.year][item.country_name] = item.value;
+      });
 
-const allData = transformData(data);
+      return result;
+    };
+
+    const allData = transformData(data);
 
     function getSeriesItem(category) {
       for (let i = 0; i < series.dataItems.length; i++) {
@@ -210,7 +210,16 @@ const allData = transformData(data);
     };
   }, []);
 
-  return <div id="chartdiv" className="w-full h-96"></div>;
+  return (
+    <div className="flex justify-center w-full h-screen bg-gray-100">
+      <div className="bg-white shadow-lg rounded-lg w-full p-6 mt-6 mx-4 sm:mx-20 h-fit">
+        <h2 className="text-2xl font-semibold mb-6 text-center">
+          <span className='text-blue-600'> Top Population 🌎</span>
+        </h2>
+        <div id="chartdiv" className="w-full h-96 mt-4"></div>
+      </div>
+    </div>
+  );
 };
 
-export default SocialMediaChart;
+export default PopulationChart;
