@@ -11,6 +11,9 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@amcharts/amcharts5": "^5.9.12",
+    "@amcharts/amcharts5-fonts": "^5.0.1",
+    "@amcharts/amcharts5-geodata": "^5.1.3",
     "axios": "^1.7.2",
     "react": "^18.2.0",
     "react-chart-race": "^0.0.3",

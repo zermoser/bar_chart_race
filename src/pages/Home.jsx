@@ -2,16 +2,17 @@ import { useState, useEffect } from 'react';
 import ChartRace from 'react-chart-race';
 import data from '../assets/db.json';
 
-const Test = () => {
+const Home = () => {
   const [currentYear, setCurrentYear] = useState(1950);
   const [isRunning, setIsRunning] = useState(true);
   const [speed, setSpeed] = useState(500);
   const [countryData, setCountryData] = useState([]);
+  const [totalValue, setTotalValue] = useState(0);
 
   const filterDataByYear = (year) => {
     const filteredData = data
       .filter(item => item.year === year.toString())
-      .map((item,index) => ({
+      .map((item, index) => ({
         id: index,
         title: item.country_name,
         value: item.value,
@@ -19,7 +20,11 @@ const Test = () => {
       }))
       .sort((a, b) => b.value - a.value)
       .slice(0, 12);
+      console.log('filteredData', filteredData)
     setCountryData(filteredData);
+      
+    const sumValues = filteredData.reduce((acc, curr) => acc + curr.value, 0);
+    setTotalValue(sumValues);
   };
 
   useEffect(() => {
@@ -43,7 +48,7 @@ const Test = () => {
   const handleYearChange = (e) => setCurrentYear(parseInt(e.target.value));
   const handleSpeedChange = (e) => setSpeed(parseInt(e.target.value));
 
-  let chartWidth = 0; 
+  let chartWidth = 0;
 
   if (window.innerWidth >= 1280) {
     chartWidth = 800;
@@ -54,6 +59,8 @@ const Test = () => {
   } else {
     chartWidth = 280;
   }
+
+  const timelineWidth = ((currentYear - 1950) / (2021 - 1950)) * 100;
 
   return (
     <div className="flex justify-center w-full h-auto bg-gray-100 pb-6">
@@ -97,6 +104,7 @@ const Test = () => {
             </select>
           </div>
         </div>
+
         <div className="mt-4">
           <ChartRace
             data={countryData}
@@ -109,9 +117,16 @@ const Test = () => {
             animationDuration={speed}
           />
         </div>
+
+        <div className="mt-6 w-full bg-gray-300 h-2 rounded-lg">
+          <div className="bg-blue-600 h-full rounded-lg" style={{ width: `${timelineWidth}%` }}></div>
+        </div>
+        <h3 className="text-lg font-semibold text-center mb-4">
+          Total : <span className='text-green-600'>{totalValue}</span>
+        </h3>
       </div>
     </div>
   );
 };
 
-export default Test;
+export default Home;
