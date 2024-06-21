@@ -206,7 +206,7 @@ const PopulationChart = () => {
       const d = allData[currentYear];
       // จะวน loop ผ่านทุกๆ key ใน d
       for (const n in d) {
-        // d คือ {year : {country_name : value}}
+        // d คือ {country_name : value}
         // n คือ country_name
         series.data.push({ CountryName: n, value: d[n] });
         yAxis.data.push({ CountryName: n });
