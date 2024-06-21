@@ -24,8 +24,10 @@ const PopulationChart = () => {
     const result = {};
     data.forEach(item => {
       if (!result[item.year]) {
+        // เอา year มาทำเป็น key
         result[item.year] = {};
       }
+      // ใน year จะมี {country_name : value}
       result[item.year][item.country_name] = item.value;
     });
 
@@ -33,9 +35,13 @@ const PopulationChart = () => {
   };
 
   useEffect(() => {
+    // เช็คว่าๅ keys year มีจริงไหม
     if (Object.keys(allData).length === 0) return;
 
+    // สร้าง Chart
     const root = am5.Root.new('chartdiv');
+
+    // กำหนด Format เลขทั้งหลาย M กับ B
     root.numberFormatter.setAll({
       numberFormat: '#a',
       bigNumberPrefixes: [
@@ -45,9 +51,10 @@ const PopulationChart = () => {
       smallNumberPrefixes: [],
     });
 
-    const stepDuration = 2000;
+    // เรียกใช้ธีมจาก am5themes_Animated
     root.setThemes([am5themes_Animated.new(root)]);
 
+    // สร้างแกน X Y
     const chart = root.container.children.push(
       am5xy.XYChart.new(root, {
         panX: true,
@@ -58,6 +65,7 @@ const PopulationChart = () => {
       })
     );
 
+    // เปิด zoom ถ้าข้อมูลเยอะ
     chart.zoomOutButton.set('forceHidden', true);
 
     const yRenderer = am5xy.AxisRendererY.new(root, {
@@ -66,16 +74,19 @@ const PopulationChart = () => {
       minorGridEnabled: true,
     });
 
+    // เปิดเส้น grid
     yRenderer.grid.template.set('visible', false);
 
+    // ตั้งค่าแกน Y
     const yAxis = chart.yAxes.push(
       am5xy.CategoryAxis.new(root, {
         maxDeviation: 0,
-        categoryField: 'network',
+        categoryField: 'CountryName',
         renderer: yRenderer,
       })
     );
 
+    // ตั้งค่าแกน X
     const xAxis = chart.xAxes.push(
       am5xy.ValueAxis.new(root, {
         maxDeviation: 0,
@@ -86,28 +97,37 @@ const PopulationChart = () => {
       })
     );
 
+    // กำหนดเวลา
+    const stepDuration = 200;
     xAxis.set('interpolationDuration', stepDuration / 10);
+
+    // กำหนดการเคลื่อนไหวแบบ linear
     xAxis.set('interpolationEasing', am5.ease.linear);
 
+    // ยัดค่าแกน X Y (ยัด series)
     const series = chart.series.push(
       am5xy.ColumnSeries.new(root, {
         xAxis: xAxis,
         yAxis: yAxis,
         valueXField: 'value',
-        categoryYField: 'network',
+        categoryYField: 'CountryName',
       })
     );
 
+    // ปรับ Radius ที่ bar
     series.columns.template.setAll({ cornerRadiusBR: 5, cornerRadiusTR: 5 });
 
+    // ปรับสีใน bar
     series.columns.template.adapters.add('fill', function (fill, target) {
       return chart.get('colors').getIndex(series.columns.indexOf(target));
     });
 
+    // ปรับสีกรอบ stroke ของ bar
     series.columns.template.adapters.add('stroke', function (stroke, target) {
       return chart.get('colors').getIndex(series.columns.indexOf(target));
     });
 
+    // config text ใน bar ที่วิ่งๆ
     series.bullets.push(function () {
       return am5.Bullet.new(root, {
         locationX: 1,
@@ -121,6 +141,7 @@ const PopulationChart = () => {
       });
     });
 
+    // config ปีตรงล่างขวา
     const label = chart.plotContainer.children.push(
       am5.Label.new(root, {
         text: '1950',
@@ -133,6 +154,7 @@ const PopulationChart = () => {
       })
     );
 
+    // loop เช็ค transition
     function getSeriesItem(category) {
       for (let i = 0; i < series.dataItems.length; i++) {
         const dataItem = series.dataItems[i];
@@ -142,6 +164,7 @@ const PopulationChart = () => {
       }
     }
 
+    // move-up move-down transition
     function sortCategoryAxis() {
       series.dataItems.sort((x, y) => y.get('valueX') - x.get('valueX'));
       am5.array.each(yAxis.dataItems, (dataItem) => {
@@ -164,6 +187,7 @@ const PopulationChart = () => {
       yAxis.dataItems.sort((x, y) => x.get('index') - y.get('index'));
     }
 
+    // ทำซ้ำจนกว่าจะถึงปี 2021
     let currentYear = 1950;
     const interval = setInterval(() => {
       currentYear++;
@@ -174,16 +198,22 @@ const PopulationChart = () => {
       updateData();
     }, stepDuration);
 
+    // เคลียร์ตัว transition
     const sortInterval = setInterval(sortCategoryAxis, 100);
 
+    // loop data แกน X Y มาโชว์ (เช็คจาก key = currentYear)
     function setInitialData() {
       const d = allData[currentYear];
+      // จะวน loop ผ่านทุกๆ key ใน d
       for (const n in d) {
-        series.data.push({ network: n, value: d[n] });
-        yAxis.data.push({ network: n });
+        // d คือ {year : {country_name : value}}
+        // n คือ country_name
+        series.data.push({ CountryName: n, value: d[n] });
+        yAxis.data.push({ CountryName: n });
       }
     }
 
+    // อัปเดตข้อมูลในกราฟเมื่อมีการเปลี่ยนปี (currentYear)
     function updateData() {
       let itemsWithNonZero = 0;
       if (allData[currentYear]) {
@@ -212,14 +242,20 @@ const PopulationChart = () => {
     }
 
     setInitialData();
+
+    // ใส่ดีเลย์ก่อนอัปเดตข้อมูล 50 มิลลิวินาที
     setTimeout(() => {
       currentYear++;
       updateData();
     }, 50);
 
+    // series animation 1วิ 
     series.appear(1000);
+
+    // chart animation 1วิ , delay 100 มิลลิวินาที
     chart.appear(1000, 100);
 
+    // Component ถูก unmounted ให้ dispose ตัว root
     return () => {
       root.dispose();
     };
